@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": false,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": false,
+      "noEmit": false,
+      "baseUrl": "./src",
+      "watch": true,
+      "rootDir": "src",
+      "outDir": "dist",
+    },
+    "include": [
+      "src/**/*"
+    ],
+    "exclude": ["node_modules", "build"]
+  }
+  
