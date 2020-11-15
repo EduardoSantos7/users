@@ -1,7 +1,8 @@
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 import express from 'express';
-import morgan from "morgan";
-import cors from "cors";
+import morgan from 'morgan';
+import cors from 'cors';
 
 class App {
 	public app: express.Application;
@@ -11,6 +12,7 @@ class App {
 		this.app = express();
 		this.port = process.env.PORT || 5000;
 
+		this.connectToTheDatabase();
 		this.initializeMiddlewares();
 		this.initializeControllers(controllers);
 	}
@@ -19,12 +21,14 @@ class App {
 		this.app.use(bodyParser.json());
 
 		// Config only for development
-		if (process.env.NODE_ENV === "development") {
-			this.app.use(cors({
-				origin: process.env.CLIENT_URL
-			}))
+		if (process.env.NODE_ENV === 'development') {
+			this.app.use(
+				cors({
+					origin: process.env.CLIENT_URL
+				})
+			);
 
-			this.app.use(morgan('dev'))
+			this.app.use(morgan('dev'));
 		}
 	}
 
@@ -39,6 +43,20 @@ class App {
 			// tslint:disable-next-line: no-console
 			console.log(`App listening on the port ${this.port}`);
 		});
+	}
+
+	private connectToTheDatabase() {
+		const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH } = process.env;
+		mongoose
+			.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`, {
+				useNewUrlParser: true,
+				useFindAndModify: false,
+				useUnifiedTopology: true
+			})
+			// tslint:disable-next-line: no-console
+			.then(() => console.log('Connected to DB'))
+			// tslint:disable-next-line: no-console
+			.catch((err) => console.log(err));
 	}
 }
 
