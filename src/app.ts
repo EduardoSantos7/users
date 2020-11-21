@@ -4,6 +4,8 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 
+import errorMiddleware from './middleware/error.middleware';
+
 class App {
 	public app: express.Application;
 	public port: number | string | undefined;
@@ -15,6 +17,11 @@ class App {
 		this.connectToTheDatabase();
 		this.initializeMiddlewares();
 		this.initializeControllers(controllers);
+		this.initializeErrorHandling();
+	}
+
+	private initializeErrorHandling() {
+		this.app.use(errorMiddleware);
 	}
 
 	private initializeMiddlewares() {
